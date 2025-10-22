@@ -4,7 +4,7 @@ class Footer extends React.Component{
     render(){
         return(
             <div id="footer">
-            <h3>Pie de página</h3>
+            <h3>Xurde de los Bueis Suárez</h3>
             
             </div>
         );
