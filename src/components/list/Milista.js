@@ -1,6 +1,6 @@
-import React from "react";
-class Milista extends React.Component{
-    state = {incidencias: [
+import React, {useState} from "react";
+function Milista (){
+    const  [incidencias, setIncidencias] = useState ([
     {
         id_incidencia: 1,
         id_usuario: 'e768590345h',
@@ -34,26 +34,23 @@ class Milista extends React.Component{
         estado: "Resuelta",
         ubicacion: "Sala de profesores"
     },
-]
+]);
 
-    }
-
-
-    render(){
         return(
-            <>
+            <div className ='lista'>
              <ul>
-                {this.state.incidencias.map((i) => (
+                {incidencias.map((i) => (
                 <li><strong>Título:</strong>{i.titulo}<br></br>
                 <strong>Descripción:</strong> {i.descripcion}<br></br>
                 <strong>Usuario:</strong> {i.id_usuario}<br></br>
                 <strong>Ubicación:</strong> {i.ubicacion}<br></br><br></br>
                 </li>
-             ))}
+             ))
+            }
             </ul>
+            </div>
         
-        </>
+        
         );
     };
-};
 export default Milista;
