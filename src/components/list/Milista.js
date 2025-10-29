@@ -1,56 +1,31 @@
-import React, {useState} from "react";
-function Milista (){
-    const  [incidencias, setIncidencias] = useState ([
-    {
-        id_incidencia: 1,
-        id_usuario: 'e768590345h',
-        titulo: "Proyector averiado en aula 2",
-        descripcion:"El proyector no enciende y la lámpara parece dañada.",
-        categoria: "Hardware",
-        nivel_urgencia: "Alta",
-        fecha_registro: "2025-10-03",
-        estado: "Abierta",
-        ubicacion: "A301"
-    },
-    {
-        id_incidencia: 2,
-        id_usuario: 'e235439802s',
-        titulo: "Ordenador de secretaría no enciende",
-        descripcion:"El equipo no responde al presionar el botón de encendido",
-        categoria: "Hardware",
-        nivel_urgencia: "Media",
-        fecha_registro: "2025-10-02",
-        estado: "En proceso",
-        ubicacion: "B205"
-    },
-    {
-        id_incidencia: 3,
-        id_usuario: 'e7658449381b',
-        titulo: "Impresora sin conexión",
-        descripcion:"La impresora de la sala de profesores no aparece en red",
-        categoria: "Red/Impresión",
-        nivel_urgencia: "Alta",
-        fecha_registro: "2025-10-01",
-        estado: "Resuelta",
-        ubicacion: "Sala de profesores"
-    },
-]);
+function MiLista(props){
 
-        return(
-            <div className ='lista'>
-             <ul>
-                {incidencias.map((i) => (
-                <li><strong>Título:</strong>{i.titulo}<br></br>
-                <strong>Descripción:</strong> {i.descripcion}<br></br>
-                <strong>Usuario:</strong> {i.id_usuario}<br></br>
-                <strong>Ubicación:</strong> {i.ubicacion}<br></br><br></br>
-                </li>
-             ))
-            }
+    return(
+        <div ClassName='lista'>
+            <ul>
+                {
+                    props.incidencias.map((i)=> (
+                        <li>
+                            
+                            <strong>ID incidencia:</strong> {i.id_incidencias}<br></br>
+                            <strong>Titulo: </strong>{i.titulo}<br></br>
+                            <strong>Descripcion: </strong>{i.descripcion}<br></br>
+                            <strong>Categoria: </strong>{i.categoria}<br></br>
+                            <strong>Nivel de urgencia: </strong>{i.nivel_urgencia}<br></br>
+                            <strong>Fecha de registro: </strong>{i.fecha_registro}<br></br>
+                            <strong>Estado: </strong>{i.estado}<br></br>
+                            <strong>Ubicacion: </strong>{i.ubicacion}<br></br><br></br>
+                            
+                        </li>
+                        
+                    ))
+
+                }
             </ul>
-            </div>
-        
-        
-        );
-    };
-export default Milista;
+        </div>
+    );
+}
+
+export default MiLista;
+
+
