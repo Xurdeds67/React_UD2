@@ -6,8 +6,8 @@ class Form extends React.Component{
     envioFormulario=(event)=>{
         event.preventDefault();
         const form= event.target;
-        this.props.agregarIncidencia(form.id.value, form.titulo.value, form.usuario.value, form.descripcion.value,
-            form.categoria.value, form.nivel.value, form.ubicacion.value, form.fecha.value, form.estado.value
+        this.props.agregarIncidencia( form.titulo.value, form.usuario.value, form.descripcion.value,
+            form.categoria.value, form.nivel.value, form.ubicacion.value
         )
     }
 
@@ -16,10 +16,7 @@ class Form extends React.Component{
             <div>
                 <h2>Registrar incidencia</h2>
                 <form onSubmit={this.envioFormulario}>
-                    <div className="elemento-form">
-                        <label>Id incidencia:</label>
-                        <input type="number" name="id" placeholder="Introduce el id de la incidencia" required></input>
-                    </div>
+                    
 
                     <div className="elemento-form">
                         <label>Titulo:</label>
@@ -58,20 +55,7 @@ class Form extends React.Component{
                         </select>
                     </div>
                     
-                    <div className="elemento-form">
-                        <label>Estado:</label>
-                        <select name="estado" required>
-                            <option>Abierta</option>
-                            <option>En curso</option>
-                            <option>Resuelta</option>
-                            <option>Cerrada</option>
-                        </select>
-                    </div>
                     
-                    <div className="elemento-form">
-                        <label>fecha registro:</label>
-                        <input type="date" name="fecha" required></input>
-                    </div>
 
                     <div className="elemento-form">
                         <label>Ubicacion:</label>

@@ -61,16 +61,21 @@ class App extends React.Component {
     ]
       
     }
-    agregarIncidencia=(id_nuevo, titulo_nuevo, usuario_nuevo, descripcion_nuevo, categoria_nuevo,nivel_urgencia_nuevo, ubicacion_nuevo, fecha_registro_nuevo, estado_nuevo,)=>{
-      const nueva_incidencia={
-        id_incidencias: id_nuevo,
+    agregarIncidencia=( titulo_nuevo, usuario_nuevo, descripcion_nuevo, categoria_nuevo,nivel_urgencia_nuevo, ubicacion_nuevo)=>{
+      const fecha= new Date();
+      const year = fecha.getFullYear();
+      const month = String(fecha.getMonth()+1).padStart(2,'0');
+      const day = String (fecha.getDate()).padStart(2,'0');
+      const fecha_formateada= year+ "-" + month + "-" + day;
+      const nueva_incidencia= {
+        id_incidencias: this.state.incidencias.length +1 ,
         id_usuario: usuario_nuevo,
         titulo: titulo_nuevo,
         descripcion: descripcion_nuevo,
         categoria: categoria_nuevo,
         nivel_urgencia: nivel_urgencia_nuevo,
-        fecha_registro: fecha_registro_nuevo,
-        estado: estado_nuevo,
+        fecha_registro: fecha_formateada,
+        estado: "Abierta",
         ubicacion: ubicacion_nuevo
       }
       console.log("Nueva incidencia",nueva_incidencia);
