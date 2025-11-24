@@ -1,9 +1,9 @@
-import './App.css';
-import MiLista from '../list/Milista';
+import IncidentList from '../list/IncidentList.js';
 import Header from '../header/Header.js';
 import Footer from '../footer/Footer.js';
 import React, { useState } from 'react';
 import Form from '../Form.js';
+import Fondo from '../../img/Fondo.jpg';
 
 function App() {
 
@@ -11,10 +11,10 @@ function App() {
     {
       id_incidencias: 1,
       id_usuario: "xurdeds",
-      titulo: "Proyecto averia",
-      descripcion: "Proyecto averiado en el aula 2",
+      titulo: "Proyector averia",
+      descripcion: "Proyector averiado en el aula 2",
       categoria: "Hardware",
-      nivel_urgencia: "Media",
+      nivel_urgencia: "Alta",
       fecha_registro: "2025-10-20",
       estado: "Abierto",
       ubicacion: "B205"
@@ -22,10 +22,21 @@ function App() {
     {
       id_incidencias: 2,
       id_usuario: "xurdeds",
-      titulo: "Proyecto averia",
+      titulo: "Ordenador averia",
       descripcion: "Ordenador no enciende",
       categoria: "Hardware",
-      nivel_urgencia: "Baja",
+      nivel_urgencia: "Media",
+      fecha_registro: "2025-10-20",
+      estado: "Abierto",
+      ubicacion: "B205"
+    },
+    {
+      id_incidencias: 3,
+      id_usuario: "xurdeds",
+      titulo: "Persiana averia",
+      descripcion: "Persiana no baja",
+      categoria: "Infraestructuras",
+      nivel_urgencia: "Media",
       fecha_registro: "2025-10-20",
       estado: "Abierto",
       ubicacion: "B205"
@@ -64,23 +75,27 @@ function App() {
   };
 
   return (
-    <>
+    <div
+      className="card"
+      style={{
+        backgroundImage: `url(${Fondo})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat"
+      }}
+    >
       <Header />
-      <h2>Mi aplicación</h2>
-      <p>Este es mi contenido de la app</p>
-
-      <div className="Contenedor-incidencias">
-        <main>
-          <MiLista incidencias={incidencias} />
+      <h2 className='mb-4 text-center'>Mi aplicación</h2>
+      <div className="container-fluid mt4 row">
+        <main className='col-md-6'>
+          <p>Este es mi contenido de la app</p>
+          <IncidentList incidencias={incidencias} />
         </main>
-
-        <aside>
+        <aside className='col-md-6'>
           <Form agregarIncidencia={agregarIncidencia} />
         </aside>
       </div>
-
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -1,13 +1,13 @@
 import React from "react";
-import './Footer.css'
+
 class Footer extends React.Component{
     render(){
         return(
-            <div id="footer">
-            <h3>Xurde de los Bueis Suárez</h3>
-            
+            <div className="bg-dark text-center text-white p-3">
+                <h3>Copyright © 2025 Xurde de los Bueis Suárez</h3>
             </div>
         );
     };
 };
+
 export default Footer;
