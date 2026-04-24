@@ -1,22 +1,20 @@
-// Usamos '../' para salir de la carpeta 'main' hacia 'components'
-// y '../../' para salir hasta 'src' para buscar la imagen
-
 import IncidentList from '../list/IncidentList.js'; 
 import Header from '../header/Header.js'; 
 import Footer from '../footer/Footer.js'; 
 import React, { useState, useEffect } from 'react';
-import Form from '../Form.js'; // Asumiendo que Form.js está directo en 'components'
-import Fondo from '../../img/Fondo.jpg'; // Salimos de 'main', salimos de 'components', entramos a 'img'
+import Form from '../Form.js'; 
+import Login from '../Login.js';
+import Fondo from '../../img/Fondo.jpg'; 
 
 function App() {
-
   const INCIDENCIA_API = 'http://localhost:3004/incidencias';
   const USUARIO_API = 'http://localhost:3004/users';
+  const LOGIN_API_URL = 'http://localhost:3004/login'; 
 
   const [usuarios, setUsuarios] = useState([]);
   const [incidencias, setIncidencias] = useState([]);
+  const [usuarioLogueado, setUsuarioLogueado] = useState(null); 
 
-  // Carga inicial de datos (GET)
   useEffect(() => {
     const obtenerIncidencias = async () => {
       try {
@@ -44,31 +42,41 @@ function App() {
     obtenerUsuarios();
   }, []);
 
-  // Función para agregar incidencia (POST)
-  const agregarIncidencia = async (
-    titulo_nuevo,
-    email_usuario_nuevo, // Recibimos el email
-    descripcion_nuevo,
-    categoria_nuevo,
-    nivel_urgencia_nuevo,
-    ubicacion_nuevo
-  ) => {
+  const onLogin = async (email, password) => {
+    try {
+      const response = await fetch(LOGIN_API_URL, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ email: email, password: password }) 
+});
 
-    // 1. Calcular fecha actual
+      if (response.ok) {
+        const userData = await response.json();
+        setUsuarioLogueado(userData);
+      } else {
+        const errorData = await response.json();
+        alert(`Fallo de autenticación. Error: ${response.status}: ${errorData}`); // Muestra error si falla
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Fallo de conexión con el servidor");
+    }
+  };
+
+  const agregarIncidencia = async (titulo_nuevo, email_usuario_nuevo, descripcion_nuevo, categoria_nuevo, nivel_urgencia_nuevo, ubicacion_nuevo) => {
     const fecha = new Date();
     const year = fecha.getFullYear();
     const month = String(fecha.getMonth() + 1).padStart(2, '0');
     const day = String(fecha.getDate()).padStart(2, '0');
     const fecha_formateada = `${year}-${month}-${day}`;
 
-    // 2. Buscar si el usuario existe por su email
-    // (Asegúrate de que en tu db.json los usuarios tengan el campo "email")
     let usuarioEncontrado = usuarios.find((u) => u.email === email_usuario_nuevo);
 
     if (usuarioEncontrado) {
-      // 3. Crear el objeto incidencia (Sin ID, JSON Server lo pone)
       const nueva_incidencia = {
-        usuario: usuarioEncontrado, // Guardamos todo el objeto usuario
+        usuario: usuarioEncontrado, 
         titulo: titulo_nuevo,
         descripcion: descripcion_nuevo,
         categoria: categoria_nuevo,
@@ -80,12 +88,9 @@ function App() {
       };
 
       try {
-        // 4. Petición POST
         let response = await fetch(INCIDENCIA_API, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(nueva_incidencia)
         });
 
@@ -93,9 +98,7 @@ function App() {
           throw new Error(`Fallo de la petición POST. Estado: ${response.status}`);
         }
 
-        // 5. Actualizar el estado visual con la respuesta del servidor (que trae el ID)
         let data = await response.json();
-        console.log("Incidencia guardada:", data);
         setIncidencias([...incidencias, data]);
 
       } catch (e) {
@@ -104,10 +107,10 @@ function App() {
       }
 
     } else {
-      // Si el email no coincide con ninguno en la base de datos
       alert("No se puede crear incidencia. Usuario no encontrado (Verifica el email).");
     }
   };
+
 
   return (
     <div
@@ -121,13 +124,25 @@ function App() {
     >
       <Header />
       <h2 className='mb-4 text-center mt-3'>Mi aplicación</h2>
-      <div className="container-fluid mt-4 row">
-        <main className='col-md-8'>
-          <IncidentList incidencias={incidencias} />
-        </main>
-        <aside className='col-md-4'>
-          <Form agregarIncidencia={agregarIncidencia} />
-        </aside>
+      <div className="container-fluid mt-4 row justify-content-center">
+        
+        {!usuarioLogueado ? (
+          /* Si NO hay usuario: se muestra el Login en un aside a la derecha */
+          <aside className='col-md-4 offset-md-8'>
+            <Login onLogin={onLogin} />
+          </aside>
+        ) : (
+          /* Si SÍ hay usuario: se muestra la App normal */
+          <>
+            <main className='col-md-8'>
+              <IncidentList incidencias={incidencias} />
+            </main>
+            <aside className='col-md-4'>
+              <Form agregarIncidencia={agregarIncidencia} />
+            </aside>
+          </>
+        )}
+
       </div>
       <Footer />
     </div>

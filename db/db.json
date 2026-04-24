@@ -144,7 +144,7 @@
         "id": 7,
         "nombre": "Elena",
         "email": "elena.sanchez@educastur.org",
-        "password": "$2y$10$SNm8N6v.ps3GZ.jR6hHLR./vHeqNw3SwzQpvLrEi8X7IGIz1/3KOy",
+        "password": "$2a$10$SNm8N6v.ps3GZ.jR6hHLR./vHeqNw3SwzQpvLrEi8X7IGIz1/3KOy",
         "rol": {
           "id": 1,
           "nombre_rol": "comun",
@@ -399,7 +399,7 @@
       "id": 9,
       "nombre": "Patricia",
       "email": "patricia.gomez@educastur.org",
-      "password": "$2y$10$2xnlupLIDZi4asqQTFUfu.GKWe/Hy8C07R1.CyvVrUq2JBjOoiiZC",
+      "password": "$2y$10$vNif834OkwZ2zaP3JH42S.R1Tvb5nqQmB1m.rRJbR0uVKnm07xU7a",
       "rol": {
         "id": 2,
         "nombre_rol": "admin",
