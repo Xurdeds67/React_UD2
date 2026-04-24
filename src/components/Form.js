@@ -6,9 +6,11 @@ function Form(props) {
         event.preventDefault();
         const form = event.target;
 
+        // Llamamos a la función del padre pasando los valores
+        // NOTA: El segundo parámetro es form.email.value
         props.agregarIncidencia(
             form.titulo.value,
-            form.usuario.value,
+            form.email.value, 
             form.descripcion.value,
             form.categoria.value,
             form.nivel.value,
@@ -26,144 +28,70 @@ function Form(props) {
                 backgroundColor: "#ffffff",
                 border: "3px solid #0d6efd",
                 borderRadius: "15px",
-                boxShadow: "0 8px 16px rgba(13, 110, 253, 0.2)"
             }}
         >
-            <h2
-                className="card-title mb-4 text-center"
-                style={{
-                    color: "#0d6efd",
-                    fontWeight: "bold",
-                    fontSize: "28px",
-                    textShadow: "1px 1px 2px rgba(0,0,0,0.1)"
-                }}
-            >
-                📝 Registrar Nueva Incidencia
+            <h2 className="card-title mb-4 text-center" style={{ color: "#0d6efd", fontWeight: "bold" }}>
+                📝 Registrar Incidencia
             </h2>
             <form onSubmit={envioFormulario}>
 
-                {/*titulo incidencia*/}
+                {/* Título */}
                 <div className="mb-3">
-                    <label
-                        className="form-label"
-                        style={{
-                            fontWeight: "700",
-                            color: "#0d6efd",
-                            fontSize: "15px",
-                            marginBottom: "8px"
-                        }}
-                    >
+                    <label className="form-label" style={{ fontWeight: "700", color: "#0d6efd" }}>
                         📌 Título:
                     </label>
                     <input
                         className="form-control"
                         type="text"
                         name="titulo"
-                        placeholder="Introduce el título de la incidencia"
+                        placeholder="Ej: Fallo en impresora"
                         required
-                        style={{
-                            border: "2px solid #ced4da",
-                            borderRadius: "8px",
-                            padding: "10px 15px",
-                            fontSize: "14px",
-                            transition: "all 0.3s"
-                        }}
-                        onFocus={(e) => e.target.style.border = "2px solid #0d6efd"}
-                        onBlur={(e) => e.target.style.border = "2px solid #ced4da"}
+                        style={{ border: "2px solid #ced4da", borderRadius: "8px" }}
                     />
                 </div>
 
-                {/* usuario*/}
+                {/* Email del Usuario (CAMBIO IMPORTANTE) */}
                 <div className="mb-3">
-                    <label
-                        className="form-label"
-                        style={{
-                            fontWeight: "700",
-                            color: "#0d6efd",
-                            fontSize: "15px",
-                            marginBottom: "8px"
-                        }}
-                    >
-                        👤 Usuario:
+                    <label className="form-label" style={{ fontWeight: "700", color: "#0d6efd" }}>
+                        📧 Email del Usuario:
                     </label>
                     <input
                         className="form-control"
-                        type="text"
-                        name="usuario"
-                        placeholder="Introduce tu nombre de usuario"
+                        type="email"
+                        name="email" 
+                        placeholder="ejemplo@educastur.org"
                         required
-                        style={{
-                            border: "2px solid #ced4da",
-                            borderRadius: "8px",
-                            padding: "10px 15px",
-                            fontSize: "14px",
-                            transition: "all 0.3s"
-                        }}
-                        onFocus={(e) => e.target.style.border = "2px solid #0d6efd"}
-                        onBlur={(e) => e.target.style.border = "2px solid #ced4da"}
+                        style={{ border: "2px solid #ced4da", borderRadius: "8px" }}
                     />
                 </div>
 
-                {/* Descripción*/}
+                {/* Descripción */}
                 <div className="mb-3">
-                    <label
-                        className="form-label"
-                        style={{
-                            fontWeight: "700",
-                            color: "#0d6efd",
-                            fontSize: "15px",
-                            marginBottom: "8px"
-                        }}
-                    >
+                    <label className="form-label" style={{ fontWeight: "700", color: "#0d6efd" }}>
                         📄 Descripción:
                     </label>
                     <textarea
                         className="form-control"
                         name="descripcion"
-                        placeholder="Describe detalladamente la incidencia..."
-                        rows="4"
+                        placeholder="Detalles de la incidencia..."
+                        rows="3"
                         required
-                        style={{
-                            border: "2px solid #ced4da",
-                            borderRadius: "8px",
-                            padding: "10px 15px",
-                            fontSize: "14px",
-                            transition: "all 0.3s",
-                            resize: "vertical"
-                        }}
-                        onFocus={(e) => e.target.style.border = "2px solid #0d6efd"}
-                        onBlur={(e) => e.target.style.border = "2px solid #ced4da"}
+                        style={{ border: "2px solid #ced4da", borderRadius: "8px" }}
                     ></textarea>
                 </div>
 
+                {/* Categoría */}
                 <div className="mb-3">
-                    <label
-                        className="form-label"
-                        style={{
-                            fontWeight: "700",
-                            color: "#0d6efd",
-                            fontSize: "15px",
-                            marginBottom: "8px"
-                        }}
-                    >
+                    <label className="form-label" style={{ fontWeight: "700", color: "#0d6efd" }}>
                         🔧 Categoría:
                     </label>
                     <select
                         className="form-control"
                         name="categoria"
                         required
-                        style={{
-                            border: "2px solid #ced4da",
-                            borderRadius: "8px",
-                            padding: "10px 15px",
-                            fontSize: "14px",
-                            transition: "all 0.3s",
-                            cursor: "pointer"
-                        }}
-                        onFocus={(e) => e.target.style.border = "2px solid #0d6efd"}
-                        onBlur={(e) => e.target.style.border = "2px solid #ced4da"}
+                        style={{ border: "2px solid #ced4da", borderRadius: "8px" }}
                     >
-                        <option value="">Seleccionar categoría...</option>
+                        <option value="">Seleccionar...</option>
                         <option>Hardware</option>
                         <option>Software</option>
                         <option>Red y conectividad</option>
@@ -172,97 +100,52 @@ function Form(props) {
                     </select>
                 </div>
 
+                {/* Nivel de urgencia */}
                 <div className="mb-3">
-                    <label
-                        className="form-label"
-                        style={{
-                            fontWeight: "700",
-                            color: "#0d6efd",
-                            fontSize: "15px",
-                            marginBottom: "8px"
-                        }}
-                    >
-                        ⚠️ Nivel de urgencia:
+                    <label className="form-label" style={{ fontWeight: "700", color: "#0d6efd" }}>
+                        ⚠️ Urgencia:
                     </label>
                     <select
                         className="form-control"
                         name="nivel"
                         required
-                        style={{
-                            border: "2px solid #ced4da",
-                            borderRadius: "8px",
-                            padding: "10px 15px",
-                            fontSize: "14px",
-                            transition: "all 0.3s",
-                            cursor: "pointer"
-                        }}
-                        onFocus={(e) => e.target.style.border = "2px solid #0d6efd"}
-                        onBlur={(e) => e.target.style.border = "2px solid #ced4da"}
+                        style={{ border: "2px solid #ced4da", borderRadius: "8px" }}
                     >
-                        <option value="">Seleccionar urgencia...</option>
+                        <option value="">Seleccionar...</option>
                         <option>Alta</option>
                         <option>Media</option>
                         <option>Baja</option>
                     </select>
                 </div>
 
-                {/* Ubicación*/}
+                {/* Ubicación */}
                 <div className="mb-4">
-                    <label
-                        className="form-label"
-                        style={{
-                            fontWeight: "700",
-                            color: "#0d6efd",
-                            fontSize: "15px",
-                            marginBottom: "8px"
-                        }}
-                    >
+                    <label className="form-label" style={{ fontWeight: "700", color: "#0d6efd" }}>
                         📍 Ubicación:
                     </label>
                     <input
                         className="form-control"
                         type="text"
                         name="ubicacion"
-                        placeholder="Ej: B205, Aula 3, Sala de servidores..."
+                        placeholder="Ej: Aula 5"
                         required
-                        style={{
-                            border: "2px solid #ced4da",
-                            borderRadius: "8px",
-                            padding: "10px 15px",
-                            fontSize: "14px",
-                            transition: "all 0.3s"
-                        }}
-                        onFocus={(e) => e.target.style.border = "2px solid #0d6efd"}
-                        onBlur={(e) => e.target.style.border = "2px solid #ced4da"}
+                        style={{ border: "2px solid #ced4da", borderRadius: "8px" }}
                     />
                 </div>
 
-                {/*Botón*/}
+                {/* Botón */}
                 <button
                     type="submit"
-                    className="btn mx-auto d-grid w-100"
+                    className="btn w-100"
                     style={{
                         background: "linear-gradient(135deg, #198754 0%, #146c43 100%)",
                         color: "white",
                         fontWeight: "bold",
-                        padding: "14px",
-                        fontSize: "17px",
-                        border: "none",
                         borderRadius: "10px",
-                        boxShadow: "0 4px 8px rgba(25, 135, 84, 0.3)",
-                        transition: "all 0.3s",
-                        cursor: "pointer"
-                    }}
-                    onMouseEnter={(e) => {
-                        e.target.style.transform = "translateY(-2px)";
-                        e.target.style.boxShadow = "0 6px 12px rgba(25, 135, 84, 0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                        e.target.style.transform = "translateY(0)";
-                        e.target.style.boxShadow = "0 4px 8px rgba(25, 135, 84, 0.3)";
+                        padding: "12px"
                     }}
                 >
-                    ✅ Registrar Incidencia
+                    ✅ Registrar
                 </button>
 
             </form>
