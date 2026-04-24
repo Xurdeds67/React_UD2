@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import IncidentList from '../list/IncidentList.js'; 
 import Header from '../header/Header.js'; 
 import Footer from '../footer/Footer.js'; 
@@ -42,22 +43,48 @@ function App() {
     obtenerUsuarios();
   }, []);
 
+  useEffect(() => {
+    const obtenerUsuarioLogueado = () => {
+      const savedToken = localStorage.getItem('authToken');
+      if (savedToken) {
+        try {
+          const decodedUser = jwtDecode(savedToken);
+          if (decodedUser) {
+            const user = usuarios.find((u) => u.email === decodedUser.email);
+            if (user) {
+              setUsuarioLogueado(user);
+            }
+          }
+        } catch (error) {
+          localStorage.removeItem('authToken');
+        }
+      }
+    };
+    obtenerUsuarioLogueado();
+  }, [usuarios]);
+
+  const cerrarSesion = () => {
+    localStorage.removeItem('authToken');
+    setUsuarioLogueado(null);
+  };
+
   const onLogin = async (email, password) => {
     try {
       const response = await fetch(LOGIN_API_URL, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ email: email, password: password }) 
-});
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, password: password }) 
+      });
 
       if (response.ok) {
         const userData = await response.json();
-        setUsuarioLogueado(userData);
+        localStorage.setItem("authToken", JSON.stringify(userData["accessToken"]));
+        setUsuarioLogueado(userData.user);
       } else {
         const errorData = await response.json();
-        alert(`Fallo de autenticación. Error: ${response.status}: ${errorData}`); // Muestra error si falla
+        alert(`Fallo de autenticación. Error: ${response.status}: ${errorData}`); 
       }
     } catch (error) {
       console.error(error);
@@ -111,7 +138,6 @@ function App() {
     }
   };
 
-
   return (
     <div
       className="card"
@@ -123,16 +149,20 @@ function App() {
       }}
     >
       <Header />
+      {usuarioLogueado && (
+        <div className="text-end p-3">
+          <button className="btn btn-danger" onClick={cerrarSesion}>
+            Cerrar sesión
+          </button>
+        </div>
+      )}
       <h2 className='mb-4 text-center mt-3'>Mi aplicación</h2>
       <div className="container-fluid mt-4 row justify-content-center">
-        
         {!usuarioLogueado ? (
-          /* Si NO hay usuario: se muestra el Login en un aside a la derecha */
-          <aside className='col-md-4 offset-md-8'>
+          <aside className='col-md-4'>
             <Login onLogin={onLogin} />
           </aside>
         ) : (
-          /* Si SÍ hay usuario: se muestra la App normal */
           <>
             <main className='col-md-8'>
               <IncidentList incidencias={incidencias} />
@@ -142,7 +172,6 @@ function App() {
             </aside>
           </>
         )}
-
       </div>
       <Footer />
     </div>
