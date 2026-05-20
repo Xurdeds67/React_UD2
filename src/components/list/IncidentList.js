@@ -30,6 +30,8 @@ function IncidentList(props) {
                             <th>Fecha</th>
                             <th>Estado</th>
                             <th>Ubicación</th>
+                    
+                            {props.usuarioLogueado?.rol?.nombre_rol === 'admin' && <th>Acciones</th>}
                         </tr>
                     </thead>
 
@@ -37,7 +39,6 @@ function IncidentList(props) {
                         {props.incidencias.map((i) => (
                             <tr key={i.id} style={{ borderBottom: "1px solid #dee2e6" }}>
                                 <td style={{ fontWeight: "bold", color: "#0d6efd" }}>{i.id}</td>
-                                {/* Usamos optional chaining (?.) para evitar errores si el usuario no viene cargado */}
                                 <td style={{ fontWeight: "600", color: "#495057" }}>👤 {i.usuario?.nombre || "Desconocido"}</td>
                                 <td style={{ color: "#6c757d", fontSize: "0.9em" }}>{i.usuario?.email || "-"}</td>
                                 <td style={{ fontWeight: "600" }}>{i.titulo}</td>
@@ -54,6 +55,20 @@ function IncidentList(props) {
                                 <td>{i.fecha_registro}</td>
                                 <td><span className="badge bg-info text-dark">{i.estado}</span></td>
                                 <td>📍 {i.ubicacion}</td>
+                            
+                                {props.usuarioLogueado?.rol?.nombre_rol === 'admin' && (
+                                    <td>
+                                        {i.estado !== 'Cerrada' ? (
+                                            <button 
+                                                className="btn btn-sm btn-danger" 
+                                                onClick={() => props.onCerrar(i.id)}>
+                                                Cerrar
+                                            </button>
+                                        ) : (
+                                            <span className="text-muted fw-bold">Finalizada</span>
+                                        )}
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>

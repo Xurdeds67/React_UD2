@@ -1,10 +1,13 @@
 import { jwtDecode } from "jwt-decode";
+import { Routes, Route, Navigate } from 'react-router-dom';
 import IncidentList from '../list/IncidentList.js'; 
 import Header from '../header/Header.js'; 
 import Footer from '../footer/Footer.js'; 
 import React, { useState, useEffect } from 'react';
 import Form from '../Form.js'; 
 import Login from '../Login.js';
+import Menu from './Menu.js'; 
+import UserRoleManagement from './UserRoleManagement.js'; 
 import Fondo from '../../img/Fondo.jpg'; 
 
 function App() {
@@ -138,6 +141,22 @@ function App() {
     }
   };
 
+  const cerrarIncidencia = async (id) => {
+    try {
+        let response = await fetch(`${INCIDENCIA_API}/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ estado: "Cerrada" })
+        });
+        if (response.ok) {
+            let incidenciaActualizada = await response.json();
+            setIncidencias(incidencias.map(i => i.id === id ? incidenciaActualizada : i));
+        }
+    } catch (e) {
+        console.error("Error al cerrar:", e);
+    }
+  };
+
   return (
     <div
       className="card"
@@ -149,28 +168,26 @@ function App() {
       }}
     >
       <Header />
-      {usuarioLogueado && (
-        <div className="text-end p-3">
-          <button className="btn btn-danger" onClick={cerrarSesion}>
-            Cerrar sesión
-          </button>
-        </div>
-      )}
-      <h2 className='mb-4 text-center mt-3'>Mi aplicación</h2>
-      <div className="container-fluid mt-4 row justify-content-center">
+      <Menu usuarioLogueado={usuarioLogueado} onLogout={cerrarSesion} />
+      
+      <div className="container-fluid mt-4 mb-5 row justify-content-center">
         {!usuarioLogueado ? (
-          <aside className='col-md-4'>
-            <Login onLogin={onLogin} />
-          </aside>
+          <Routes>
+             <Route path="*" element={<aside className='col-md-4'><Login onLogin={onLogin} /></aside>} />
+          </Routes>
         ) : (
-          <>
-            <main className='col-md-8'>
-              <IncidentList incidencias={incidencias} />
-            </main>
-            <aside className='col-md-4'>
-              <Form agregarIncidencia={agregarIncidencia} />
-            </aside>
-          </>
+          <Routes>
+            <Route path="/" element={
+                <div className="text-center text-white bg-dark p-4 rounded col-md-8">
+                    <h2>Bienvenido, {usuarioLogueado.nombre}</h2>
+                    <p>Selecciona una opción del menú de navegación para comenzar.</p>
+                </div>
+            } />
+            <Route path="/incidencias" element={<main className='col-md-10'><IncidentList incidencias={incidencias} usuarioLogueado={usuarioLogueado} onCerrar={cerrarIncidencia} /></main>} />
+            <Route path="/registrar" element={<aside className='col-md-6'><Form agregarIncidencia={agregarIncidencia} /></aside>} />
+            <Route path="/usuarios" element={<main className='col-md-10'><UserRoleManagement usuarios={usuarios} setUsuarios={setUsuarios} API_URL={USUARIO_API}/></main>} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
         )}
       </div>
       <Footer />
